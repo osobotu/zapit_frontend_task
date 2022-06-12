@@ -21,8 +21,6 @@ class ZapitApp extends StatelessWidget {
       title: 'Zapit Frontend Task',
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       debugShowCheckedModeBanner: false,
-      // initialRoute: RouteGenerator.homePage,
-      // onGenerateRoute: RouteGenerator.generateRoute,
       home: const HomeView(),
     );
   }

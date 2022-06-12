@@ -1,5 +1,7 @@
-class CoinPriceHistory {
-  CoinPriceHistory({this.id, this.prices});
+import 'package:equatable/equatable.dart';
+
+class CoinPriceHistory extends Equatable {
+  const CoinPriceHistory({this.id, this.prices});
 
   final String? id;
   final List<double>? prices;
@@ -10,4 +12,8 @@ class CoinPriceHistory {
       'prices': prices,
     };
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, prices];
 }
