@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zapit_frontend_task/src/models/coin.dart';
 import 'package:zapit_frontend_task/src/repositories/local_repository.dart';
 import 'package:zapit_frontend_task/src/repositories/remote_repository.dart';
+import 'package:zapit_frontend_task/src/utils/network_aware_mixin.dart';
 import 'package:zapit_frontend_task/src/views/detail/cubit/price_list_cubit.dart';
 
 class DetailsView extends StatefulWidget {
@@ -17,7 +18,7 @@ class DetailsView extends StatefulWidget {
   State<DetailsView> createState() => _DetailsViewState();
 }
 
-class _DetailsViewState extends State<DetailsView> {
+class _DetailsViewState extends State<DetailsView> with NetworkAwareMixin {
   late final PriceListCubit priceListCubit;
   late final RemoteRepository _remoteRepository;
   late final LocalRepository _localRepository;

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zapit_frontend_task/src/models/coin.dart';
 import 'package:zapit_frontend_task/src/repositories/local_repository.dart';
 import 'package:zapit_frontend_task/src/repositories/remote_repository.dart';
+import 'package:zapit_frontend_task/src/utils/network_aware_mixin.dart';
 import 'package:zapit_frontend_task/src/views/detail/details_view.dart';
 import 'package:zapit_frontend_task/src/views/home/cubit/coins_list_cubit.dart';
 
@@ -15,7 +16,7 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with NetworkAwareMixin {
   late final CoinsListCubit coinsListCubit;
   late final RemoteRepository _remoteRepository;
   late final LocalRepository _localRepository;

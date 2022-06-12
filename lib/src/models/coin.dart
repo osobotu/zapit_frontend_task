@@ -44,7 +44,7 @@ class Coin extends Equatable {
         priceChange1h: json['priceChange1h'] * 1.0,
         priceChange1w: json['priceChange1w'] * 1.0,
         marketCap: json['marketCap'] * 1.0,
-        volume: json['volume'] * 1.0,
+        // volume: json['volume'] * 1.0,
         websiteUrl: json['websiteUrl']);
   }
 
