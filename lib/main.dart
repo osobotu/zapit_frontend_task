@@ -6,6 +6,7 @@ import 'package:zapit_frontend_task/src/views/home/home_view.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox(AppConstants.coinsListBox);
+  await Hive.openBox(AppConstants.pricesListBox);
   runApp(
     const ZapitApp(),
   );

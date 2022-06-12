@@ -6,8 +6,8 @@ import 'package:zapit_frontend_task/src/models/coin.dart';
 
 class LocalRepository {
   LocalRepository();
-
   final coinsListBox = Hive.box(AppConstants.coinsListBox);
+  final priceListBox = Hive.box(AppConstants.pricesListBox);
 
   Future<List<Coin>> getAllCoins() async {
     final localCoinsList = coinsListBox.get(AppConstants.coinsListKey);
@@ -27,5 +27,15 @@ class LocalRepository {
       localCoinsList.add(coin.toMap());
     }
     await coinsListBox.put(AppConstants.coinsListKey, localCoinsList);
+  }
+
+  Future<List<double>> getLocalCoinPriceList(String coinId) async {
+    final priceList = priceListBox.get(coinId);
+    return priceList;
+  }
+
+  Future<void> updateLocalPriceList(
+      {required String coinId, required List<double> prices}) async {
+    await priceListBox.put(coinId, prices);
   }
 }

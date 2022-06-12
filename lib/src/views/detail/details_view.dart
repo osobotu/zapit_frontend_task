@@ -1,9 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zapit_frontend_task/src/models/coin.dart';
+import 'package:zapit_frontend_task/src/repositories/local_repository.dart';
+import 'package:zapit_frontend_task/src/repositories/remote_repository.dart';
+import 'package:zapit_frontend_task/src/views/detail/cubit/price_list_cubit.dart';
 
 class DetailsView extends StatefulWidget {
-  DetailsView({Key? key, required this.coin}) : super(key: key);
+  const DetailsView({Key? key, required this.coin}) : super(key: key);
 
   final Coin coin;
 
@@ -12,6 +18,28 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
+  late final PriceListCubit priceListCubit;
+  late final RemoteRepository _remoteRepository;
+  late final LocalRepository _localRepository;
+  late final Connectivity _connectivity;
+
+  @override
+  void initState() {
+    _remoteRepository = RemoteRepository();
+    _localRepository = LocalRepository();
+    _connectivity = Connectivity();
+
+    priceListCubit = PriceListCubit(
+      remoteRepository: _remoteRepository,
+      connectivity: _connectivity,
+      localRepository: _localRepository,
+    );
+
+    priceListCubit.getPriceList(widget.coin.id.toString());
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +64,32 @@ class _DetailsViewState extends State<DetailsView> {
             priceChange1d: widget.coin.priceChange1d,
             priceChange1h: widget.coin.priceChange1h,
             priceChange1w: widget.coin.priceChange1w,
+          ),
+          const SizedBox(height: 16),
+          BlocConsumer(
+            bloc: priceListCubit,
+            builder: (context, state) {
+              if (state is PriceListLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is PriceListLoaded) {
+                return Center(
+                  child: _PricePlotSection(prices: state.prices),
+                );
+              }
+              if (state is PriceListError) {
+                return const Center(
+                  child: Text('Error occurred!'),
+                );
+              }
+              return const SizedBox();
+            },
+            listener: (context, state) {
+              if (state is PriceListLoaded) {
+                _localRepository.updateLocalPriceList(
+                    coinId: widget.coin.id.toString(), prices: state.prices);
+              }
+            },
           )
         ],
       ),
@@ -143,6 +197,41 @@ class _DescriptionSection extends StatelessWidget {
             textAlign: TextAlign.justify,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PricePlotSection extends StatelessWidget {
+  const _PricePlotSection({Key? key, required this.prices}) : super(key: key);
+
+  final List<double> prices;
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      color: Colors.blueGrey,
+      width: size.width * 0.9,
+      height: size.height * 0.4,
+      child: LineChart(
+        LineChartData(
+            borderData: FlBorderData(show: false),
+            lineBarsData: [
+              LineChartBarData(
+                isCurved: true,
+                color: Colors.black45,
+                spots: List.generate(
+                  prices.length,
+                  (index) => FlSpot(index.toDouble(), prices[index]),
+                ),
+              )
+            ],
+            gridData: FlGridData(
+              show: false,
+            )),
+        swapAnimationDuration: const Duration(milliseconds: 150),
+        swapAnimationCurve: Curves.linear,
       ),
     );
   }

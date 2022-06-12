@@ -50,14 +50,24 @@ class RemoteRepository {
     try {
       Response response =
           await dio.get(COIN_PRICE_HISTORY, queryParameters: queryParams);
+
       if (response.statusCode == 200) {
         final chartsData = response.data['chart'] as List;
-        List<double> prices =
-            chartsData.map((item) => item[1]).toList() as List<double>;
+
+        List<double> prices = [];
+        for (var item in chartsData) {
+          prices.add(item[1] * 0.1);
+        }
         coinPriceHistory = CoinPriceHistory(id: coinId, prices: prices);
       }
     } on DioError catch (_) {
       // get data from local db
+      final priceListBox = Hive.box(AppConstants.pricesListBox);
+      final prices = priceListBox.get(coinId);
+      coinPriceHistory = CoinPriceHistory(id: coinId, prices: prices);
+    } catch (err, st) {
+      print(err);
+      print(st);
     }
     return coinPriceHistory;
   }
