@@ -57,7 +57,6 @@ class _DetailsViewState extends State<DetailsView> with NetworkAwareMixin {
             symbol: widget.coin.symbol,
             price: widget.coin.price,
             marketCap: widget.coin.marketCap,
-            volume: widget.coin.volume,
           ),
           const SizedBox(height: 16),
           _DescriptionSection(
@@ -99,22 +98,20 @@ class _DetailsViewState extends State<DetailsView> with NetworkAwareMixin {
 }
 
 class _BriefDetailsSection extends StatelessWidget {
-  const _BriefDetailsSection(
-      {Key? key,
-      this.imageUrl,
-      this.name,
-      this.symbol,
-      this.price,
-      this.marketCap,
-      this.volume})
-      : super(key: key);
+  const _BriefDetailsSection({
+    Key? key,
+    this.imageUrl,
+    this.name,
+    this.symbol,
+    this.price,
+    this.marketCap,
+  }) : super(key: key);
 
   final String? imageUrl;
   final String? name;
   final String? symbol;
   final double? price;
   final double? marketCap;
-  final double? volume;
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +135,6 @@ class _BriefDetailsSection extends StatelessWidget {
             _DisplayItem(name: 'Symbol:', value: symbol.toString()),
             _DisplayItem(name: 'Price:', value: price.toString()),
             _DisplayItem(name: 'Market Cap:', value: marketCap.toString()),
-            _DisplayItem(name: 'Volume:', value: volume.toString())
           ],
         ))
       ],
@@ -212,7 +208,7 @@ class _PricePlotSection extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      color: Colors.blueGrey,
+      color: Colors.blueGrey.withOpacity(0.15),
       width: size.width * 0.9,
       height: size.height * 0.4,
       child: LineChart(

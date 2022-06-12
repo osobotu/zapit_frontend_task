@@ -58,7 +58,6 @@ void main() {
           priceChange1w: 1.0,
           websiteUrl: 'websiteUrl1',
           marketCap: 1.0,
-          volume: 1.0,
         ),
         Coin(
           id: 'id2',
@@ -73,7 +72,6 @@ void main() {
           priceChange1w: 2.0,
           websiteUrl: 'websiteUrl2',
           marketCap: 2.0,
-          volume: 2.0,
         ),
         Coin(
           id: 'id3',
@@ -88,7 +86,6 @@ void main() {
           priceChange1w: 3.0,
           websiteUrl: 'websiteUrl3',
           marketCap: 3.0,
-          volume: 3.0,
         ),
       ];
 

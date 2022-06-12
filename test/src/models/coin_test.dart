@@ -17,7 +17,6 @@ void main() {
         'priceChange1d': 1.0,
         'priceChange1w': 1.0,
         'marketCap': 1.0,
-        'volume': 1.0,
         'websiteUrl': 'websiteUrl',
       };
 
@@ -41,7 +40,6 @@ void main() {
               1.0,
               1.0,
               'websiteUrl',
-              1.0,
               1.0
             ],
           );
