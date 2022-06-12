@@ -19,8 +19,6 @@ class RemoteRepository {
     late final List<Coin> coins = [];
     try {
       Response response = await dio.get(COINS_LIST_API_URL);
-      print(response.statusCode);
-      print(response.data);
       if (response.statusCode == 200) {
         final coinsData = response.data['coins'] as List;
         for (var coin in coinsData) {
